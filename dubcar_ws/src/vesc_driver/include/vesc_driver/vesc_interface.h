@@ -3,7 +3,7 @@
 
 #include <string>
 #include <boost/scoped_ptr.hpp>
-
+#include "vesc_driver/vesc_packet.h"
 namespace vesc_driver
 {
 
@@ -13,7 +13,7 @@ class VescInterface
   public:
     VescInterface();
     ~VescInterface();
-    void send();
+    void send(Buffer payload);
     bool isConnected() const;
     void disconnect();
     void connect(const std::string& port);

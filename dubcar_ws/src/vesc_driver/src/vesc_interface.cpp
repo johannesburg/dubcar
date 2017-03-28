@@ -5,7 +5,6 @@
 #include <string>
 #include <serial/serial.h>
 #include <iostream>
-
 namespace vesc_driver
 {
  
@@ -30,20 +29,18 @@ VescInterface::~VescInterface() {}
 
 
 // TODO: specify arguments, input will be a vesc_packet type
-void VescInterface::send() 
+void VescInterface::send(Buffer packet) 
 {
-  std::string str("Hi colin!");
-  std::vector<uint8_t> data(str.begin(), str.end());;
-  std::cout << "Outputting data: ";
-  for (auto i: data)
+  std::cout << "Outputting packet: ";
+  for (auto i: packet)
     std::cout << i << ' ' ;
   std::cout << std::endl;
-  // TODO: insert data to send
+  // TODO: insert packet to send
   
-  size_t written = this->impl_->serial_.write(data);
-  if (written != data.size()) {
+  size_t written = this->impl_->serial_.write(packet);
+  if (written != packet.size()) {
     std::stringstream ss;
-    ss << "Wrote " << written << " bytes, expected " << data.size() << ".";
+    ss << "Wrote " << written << " bytes, expected " << packet.size() << ".";
     throw serial::SerialException(ss.str().c_str());
   }
 }
@@ -80,6 +77,13 @@ int main(int argc, char** argv) {
   vesc_driver::VescInterface foo;
   std::cout << "is open? " << foo.isConnected() << std::endl;
   foo.connect("/dev/ttyTHS2");
-  foo.send();
+  Buffer payload(8);
+  payload.push_back(static_cast<byte_t>('h'));
+  payload.push_back(static_cast<byte_t>('i'));
+
+  vesc_driver::VescPacket packet("Test", payload);
+  //std::cout << "packet name" << packet.getName() << std::endl;
+  //std::cout << "packet bits" << std::hex << packet.getBuffer().data() << std::endl; 
+  // foo.send();
   std::cout << "is open? " << foo.isConnected() << std::endl;
 }
