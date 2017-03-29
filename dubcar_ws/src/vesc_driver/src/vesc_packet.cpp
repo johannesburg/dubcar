@@ -1,50 +1,54 @@
-#include "vesc_driver/vesc_interface.h"
-
+#include "vesc_driver/vesc_packet.h"
+#include <iostream>
+#include <iomanip>
 namespace vesc_driver
 {
 
-VescPacket::BASE_PACKET_SIZE = static_cast<byte_t>(6); 
-VescPacket::LARGE_PAYLOAD = static_cast<byte_t>(3);
-VescPacket::SMALL_PAYLOAD = static_cast<byte_t>(2);
-VescPacket::STOP_BYTE = static_cast<byte_t>(3);
-VescPacket::LOWER_BYTE_MASK = 0xFF;
+const byte_t VescPacket::BASE_PACKET_SIZE = static_cast<byte_t>(5); 
+const byte_t VescPacket::LARGE_PAYLOAD = static_cast<byte_t>(3);
+const byte_t VescPacket::SMALL_PAYLOAD = static_cast<byte_t>(2);
+const byte_t VescPacket::STOP_BYTE = static_cast<byte_t>(3);
+const uint16_t VescPacket::LOWER_BYTE_MASK = 0xFF;
 
-VescPacket::VescPacket(std::string name, Buffer payload) :
-  name_(name), buf_(payload.size() + VescPacket::BASE_PACKET_SIZE)
+VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
+  name_(name) 
 {
-
   bool large_packet = payload.size() > 255;
-  
+  this->buf_.reserve(BASE_PACKET_SIZE + (large_packet ? 1 : 0) + payload.size());
   // append start byte (3 indicates a 2-byte length frame, 2 indicates a 1-byte length frame)
-  this.buf_.push_back(large_packet ? LARGE_PAYLOAD : SMALL_PAYLOAD);
+  this->buf_.push_back(large_packet ? LARGE_PAYLOAD : SMALL_PAYLOAD);
   
   // append length frame of either 1 or 2 bytes
   if (large_packet)
-    this.buf_.push_back(payload.size() >> sizeof(byte_t));
-  this.buf_.push_back(payload.size() & LOWER_BYTE_MASK);
+    this->buf_.push_back(payload.size() >> 8);
+  this->buf_.push_back(payload.size() & LOWER_BYTE_MASK);
   
-  // append payload's Buffer onto this VescPacket's Buffer
-  this.buf_.insert(std::end(this.buf_), 
-      std::begin(payload.getBuffer()), std::end(payload.getBuffer()));
-
-  uint16_t CRC_checksum = ???;
+  // append payload's Buffer onto this->VescPacket's Buffer
+  this->buf_.insert(std::end(this->buf_), 
+      std::begin(payload), std::end(payload));
   
+  uint16_t CRC_checksum = 0xdead; 
   // append CRC checksum
-  this.buf_.push_back(static_cast<byte_t>(CRC_checksum >> sizeof(byte_t)));
-  this.buf_.push_back(static_cast<byte_t>(CRC_checksum & LOWER_BYTE_MASK);
+  this->buf_.push_back(static_cast<byte_t>((CRC_checksum >> 8) & LOWER_BYTE_MASK)); 
+  this->buf_.push_back(static_cast<byte_t>(CRC_checksum & LOWER_BYTE_MASK));
 
   // append stop bit
-  this.buf_.push_back(STOP_BYTE);
+  this->buf_.push_back(STOP_BYTE);
+  std::cout << "here " << payload.size() << std::endl;
+  for (int i = 0; i < this->buf_.size(); i++) {
+    std::cout << std::hex << std::setfill('0') << std::setw(2) << ((int) *(this->buf_.data() + i));
+  }
+  std::cout << std::endl;
 }
 
-// return unmodifiable view of this packet's Buffer
+// return unmodifiable view of this->packet's Buffer
 const Buffer VescPacket::getBuffer() const {
-  return this.buf_;
+  return this->buf_;
 }
 
-// return unmodifiable view of this packet's name
+// return unmodifiable view of this->packet's name
 const std::string VescPacket::getName() const {
-  return this.name_;
+  return this->name_;
 }
 
 }

@@ -77,13 +77,14 @@ int main(int argc, char** argv) {
   vesc_driver::VescInterface foo;
   std::cout << "is open? " << foo.isConnected() << std::endl;
   foo.connect("/dev/ttyTHS2");
-  Buffer payload(8);
-  payload.push_back(static_cast<byte_t>('h'));
-  payload.push_back(static_cast<byte_t>('i'));
-
+  Buffer payload;
+  payload.push_back(static_cast<byte_t>(0xde));
+  payload.push_back(static_cast<byte_t>(0xad));
+  payload.push_back(static_cast<byte_t>(0xbe));
+  payload.push_back(static_cast<byte_t>(0xef));
   vesc_driver::VescPacket packet("Test", payload);
-  //std::cout << "packet name" << packet.getName() << std::endl;
-  //std::cout << "packet bits" << std::hex << packet.getBuffer().data() << std::endl; 
+  std::cout << "packet name " << packet.getName() << std::endl;
+  std::cout << "packet bits " << std::hex << packet.getBuffer().data() << std::endl; 
   // foo.send();
   std::cout << "is open? " << foo.isConnected() << std::endl;
 }

@@ -12,14 +12,14 @@ namespace vesc_driver
 
 class VescPacket 
 {
-  static const byte_t BASE_PACKET_SIZE;
-  static const byte_t LARGE_PAYLOAD;
-  static const byte_t SMALL_PAYLOAD;
-  static const byte_t STOP_BYTE;
-  static const uint16_t LOWER_BYTE_MASK;
-
   public:
-    VescPacket(std::string name, Buffer payload);
+    static const byte_t BASE_PACKET_SIZE;
+    static const byte_t LARGE_PAYLOAD;
+    static const byte_t SMALL_PAYLOAD;
+    static const byte_t STOP_BYTE;
+    static const uint16_t LOWER_BYTE_MASK;
+
+    VescPacket(const std::string &name, const Buffer &payload);
     const Buffer getBuffer() const;
     const std::string getName() const;
 
