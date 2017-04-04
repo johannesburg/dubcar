@@ -18,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS CRC)
+#find_package(Boost REQUIRED COMPONENTS CRC)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include <bost/crc.hpp>
+#include <boost/crc.hpp>
 
 typedef uint8_t byte_t;
 typedef std::vector<byte_t> Buffer;
