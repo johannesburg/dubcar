@@ -14,6 +14,7 @@ class VescInterface
     VescInterface();
     ~VescInterface();
     void send(Buffer payload);
+    void send(VescPacket packet);
     bool isConnected() const;
     void disconnect();
     void connect(const std::string& port);

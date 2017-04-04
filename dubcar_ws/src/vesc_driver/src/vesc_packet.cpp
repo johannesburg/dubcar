@@ -1,6 +1,8 @@
 #include "vesc_driver/vesc_packet.h"
 #include <iostream>
 #include <iomanip>
+#include <boost/crc.hpp>
+
 namespace vesc_driver
 {
 
@@ -8,7 +10,7 @@ const byte_t VescPacket::BASE_PACKET_SIZE = static_cast<byte_t>(5);
 const byte_t VescPacket::LARGE_PAYLOAD = static_cast<byte_t>(3);
 const byte_t VescPacket::SMALL_PAYLOAD = static_cast<byte_t>(2);
 const byte_t VescPacket::STOP_BYTE = static_cast<byte_t>(3);
-const uint16_t VescPacket::LOWER_BYTE_MASK = 0xFF;
+const uint8_t VescPacket::LOWER_BYTE_MASK = 0xFF;
 
 VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
   name_(name) 
@@ -26,8 +28,12 @@ VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
   // append payload's Buffer onto this->VescPacket's Buffer
   this->buf_.insert(std::end(this->buf_), 
       std::begin(payload), std::end(payload));
-  
-  uint16_t CRC_checksum = 0xdead; 
+
+  // calculate crc checksum
+  crc_32_t crc;
+  crc.process_bytes(payload.begin(), payload.size()); 
+  uint16_t CRC_checksum = crc.checksum(); 
+
   // append CRC checksum
   this->buf_.push_back(static_cast<byte_t>((CRC_checksum >> 8) & LOWER_BYTE_MASK)); 
   this->buf_.push_back(static_cast<byte_t>(CRC_checksum & LOWER_BYTE_MASK));

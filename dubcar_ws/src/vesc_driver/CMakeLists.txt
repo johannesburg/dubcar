@@ -1,4 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
+#include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+#rosbuild_init()
+#rosbuild_add_boost_directories()
+#rosbuild_add_library(vesc_driver src/vesc_driver.cpp)
+#rosbuild_link_boost(vesc_driver crc)
+set(BOOST, /src/include/boost)
 project(vesc_driver)
 
 ## Add support for C++11, supported in ROS Kinetic and newer
@@ -12,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS CRC)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
