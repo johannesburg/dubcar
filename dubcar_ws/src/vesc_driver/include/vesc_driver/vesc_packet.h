@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <boost/crc.hpp>
 
 typedef uint8_t byte_t;
 typedef std::vector<byte_t> Buffer;
@@ -22,10 +23,12 @@ class VescPacket
     VescPacket(const std::string &name, const Buffer &payload);
     const Buffer getBuffer() const;
     const std::string getName() const;
+    typedef boost::crc_optimal<16, 0x1021, 0, 0, false, false> crc_32_t;
 
   private:
     std::string name_;
     Buffer buf_;
+
 };
 
 }

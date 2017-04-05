@@ -45,6 +45,11 @@ void VescInterface::send(Buffer packet)
   }
 }
 
+void VescPacket::send(VescPacket packet)
+{
+  this->send(packet.getBuffer());
+}
+
 bool VescInterface::isConnected() const 
 {
   return !this->impl_->serial_.isOpen();
