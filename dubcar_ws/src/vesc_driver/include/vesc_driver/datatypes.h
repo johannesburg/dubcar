@@ -20,7 +20,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "ch.h"
+//#include "ch.h"
+//typedef uint32_t systime_t;
 
 typedef enum {
 	PWM_MODE_NONSYNCHRONOUS_HISW = 0, // This mode is not recommended

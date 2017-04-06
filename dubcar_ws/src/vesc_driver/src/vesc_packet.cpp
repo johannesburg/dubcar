@@ -31,7 +31,7 @@ VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
 
   // calculate crc checksum
   crc_32_t crc;
-  crc.process_bytes(payload.begin(), payload.size()); 
+  crc.process_bytes(&(*payload.begin()), payload.size()); 
   uint16_t CRC_checksum = crc.checksum(); 
 
   // append CRC checksum
@@ -40,7 +40,7 @@ VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
 
   // append stop bit
   this->buf_.push_back(STOP_BYTE);
-  std::cout << "here " << payload.size() << std::endl;
+  std::cout << "Buffer size: " << this->buf_.size() << std::endl;
   for (int i = 0; i < this->buf_.size(); i++) {
     std::cout << std::hex << std::setfill('0') << std::setw(2) << ((int) *(this->buf_.data() + i));
   }

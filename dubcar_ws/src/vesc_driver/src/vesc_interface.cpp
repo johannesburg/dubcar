@@ -1,4 +1,5 @@
 #include "vesc_driver/vesc_interface.h"
+#include "vesc_driver/vesc_packet.h"
 
 #include <vector>
 #include <exception>
@@ -22,7 +23,12 @@ class VescInterface::Impl {
 };
 
 // TODO: instert arguments, such as port, packet_handler, error_handler
-VescInterface::VescInterface() : impl_(new Impl()) {}
+VescInterface::VescInterface(const std::string& port) : impl_(new Impl()) 
+{
+  if (!port.empty()) {
+    connect(port);
+  }
+}
 
 // TODO:: disconnect
 VescInterface::~VescInterface() {}
@@ -45,7 +51,7 @@ void VescInterface::send(Buffer packet)
   }
 }
 
-void VescPacket::send(VescPacket packet)
+void VescInterface::send(VescPacket packet)
 {
   this->send(packet.getBuffer());
 }
@@ -77,19 +83,3 @@ void VescInterface::connect(const std::string& port)
 }
 
 } // end namespace vesc_driver
-
-int main(int argc, char** argv) {
-  vesc_driver::VescInterface foo;
-  std::cout << "is open? " << foo.isConnected() << std::endl;
-  foo.connect("/dev/ttyTHS2");
-  Buffer payload;
-  payload.push_back(static_cast<byte_t>(0xde));
-  payload.push_back(static_cast<byte_t>(0xad));
-  payload.push_back(static_cast<byte_t>(0xbe));
-  payload.push_back(static_cast<byte_t>(0xef));
-  vesc_driver::VescPacket packet("Test", payload);
-  std::cout << "packet name " << packet.getName() << std::endl;
-  std::cout << "packet bits " << std::hex << packet.getBuffer().data() << std::endl; 
-  // foo.send();
-  std::cout << "is open? " << foo.isConnected() << std::endl;
-}
