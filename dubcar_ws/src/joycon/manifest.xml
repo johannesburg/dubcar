@@ -1,0 +1,17 @@
+<package>
+  <description brief="joycon">
+
+     joycon
+
+  </description>
+  <author>ubuntu</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/joycon</url>
+  <depend package="roscpp"/>
+  <depend package="ps3joy"/>
+  <depend package="ackermann_msgs"/>
+
+</package>
+
+

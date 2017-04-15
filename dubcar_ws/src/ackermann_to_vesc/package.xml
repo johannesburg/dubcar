@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package>
-  <name>vesc</name>
+  <name>ackermann_to_vesc</name>
   <version>0.0.0</version>
-  <description>The vesc package.</description>
+  <description>The ackermann_to_vesc package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="michajoh@cs.uw.edu">Johan Michalove</maintainer>
+  <maintainer email="ubuntu@todo.todo">ubuntu</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/vesc</url> -->
+  <!-- <url type="website">http://wiki.ros.org/ackermann_to_vesc</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -40,9 +40,13 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>ackermann_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>vesc_driver</build_depend>
+  <run_depend>ackermann_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>vesc_driver</run_depend>
 
-  <build_depend>serial</build_depend>
-  <run_depend>serial</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
