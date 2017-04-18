@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <boost/crc.hpp>
+#include <boost/scoped_ptr.hpp>
 
 namespace vesc_driver
 {

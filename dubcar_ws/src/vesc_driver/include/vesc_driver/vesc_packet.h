@@ -38,6 +38,8 @@ class VescPacket
     std::string name_;
     Buffer buf_;
     class Impl;
+    //TODO: figure out how to create static inner classes
+    // Consider making a util package instead....
     static boost::scoped_ptr<Impl> impl_(new Impl()),       
 
 };
