@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <boost/crc.hpp>
+#include <boost/scoped_ptr.hpp>
 
 typedef uint8_t byte_t;
 typedef std::vector<byte_t> Buffer;
@@ -19,6 +20,14 @@ class VescPacket
     static const byte_t SMALL_PAYLOAD;
     static const byte_t STOP_BYTE;
     static const uint8_t LOWER_BYTE_MASK;
+    static VescPacket createDutyCycleCmd(float duty_cycle);
+    static VescPacket createCurrentCmd(float current); 
+    static VescPacket createCurrentBrakeCmd(float brake);
+    static VescPacket createRpmCmd(int32_t rpm); 
+    static VescPacket createPositionCmd(float position);
+    static VescPacket createServoPositionCmd(float servo);
+    static VescPacket createRebootCmd(); 
+    static VescPacket createSendAliveCmd();
 
     VescPacket(const std::string &name, const Buffer &payload);
     const Buffer getBuffer() const;
@@ -28,6 +37,8 @@ class VescPacket
   private:
     std::string name_;
     Buffer buf_;
+    class Impl;
+    static boost::scoped_ptr<Impl> impl_(new Impl()),       
 
 };
 

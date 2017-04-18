@@ -12,18 +12,8 @@ class VescDriver
 {
   public:
     VescDriver(const std::string& port);
-    void setDutyCycle(float duty_cycle);
-    void setCurrent(float current);
-    void setCurrentBrake(float brake);
-    void setRpm(int32_t rpm);
-    void setPosition(float position);
-    void setServoPosition(float servo);
-    void reboot();
-    void sendAlive();
   private: 
     VescInterface vesc_;
-    class Impl;
-    boost::scoped_ptr<Impl> impl_;      
 };
 } // end vesc_driver namespace
 #endif

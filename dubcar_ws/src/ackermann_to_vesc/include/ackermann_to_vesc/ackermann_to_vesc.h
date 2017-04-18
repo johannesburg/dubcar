@@ -8,8 +8,8 @@ namespace ackermann_to_vesc
 
 class AckermannToVesc {
   public:
-    AckermannToVesc();
-    ~AckermannToVesc();
+    AckermannToVesc(ros::NodeHandle& nh);
+    //~AckermannToVesc();
 
   private:
     ros::Publisher servo_pub_;
