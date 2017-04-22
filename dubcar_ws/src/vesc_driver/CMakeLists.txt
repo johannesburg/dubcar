@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 #find_package(Boost REQUIRED COMPONENTS CRC)
 
+find_package(GTest REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -120,6 +121,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
+  ${GTEST_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -193,10 +195,12 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_vesc_driver.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+
+catkin_add_gtest(${PROJECT_NAME}-test test/test_packet_gen.cpp test/bldc_interface.c test/bldc_interface.h 
+  test/buffer.c test/buffer.h test/crc.c test/crc.h test/datatypes.h test/packet.h src/vesc_packet.cpp)
+if(TARGET ${PROJECT_NAME}-test)
+  target_link_libraries(${PROJECT_NAME}-test ${GTEST_LIBRARIES} pthread) 
+endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
