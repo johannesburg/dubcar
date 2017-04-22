@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include <boost/crc.hpp>
-#include <boost/scoped_ptr.hpp>
 
 typedef uint8_t byte_t;
 typedef std::vector<byte_t> Buffer;
@@ -37,12 +36,12 @@ class VescPacket
   private:
     std::string name_;
     Buffer buf_;
-    class Impl;
-    //TODO: figure out how to create static inner classes
-    // Consider making a util package instead....
-    static boost::scoped_ptr<Impl> impl_(new Impl()),       
+    static void append(Buffer& buff, float number, float scale);
+    static void append(Buffer& buff, int32_t number);
+    static void append(Buffer& buff, int16_t number);
 
 };
+
 
 }
 #endif

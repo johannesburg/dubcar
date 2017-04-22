@@ -1,8 +1,8 @@
 #include "vesc_driver/vesc_packet.h"
+#include "vesc_driver/datatypes.h"
 #include <iostream>
 #include <iomanip>
 #include <boost/crc.hpp>
-#include <boost/scoped_ptr.hpp>
 
 namespace vesc_driver
 {
@@ -12,33 +12,6 @@ const byte_t VescPacket::LARGE_PAYLOAD = static_cast<byte_t>(3);
 const byte_t VescPacket::SMALL_PAYLOAD = static_cast<byte_t>(2);
 const byte_t VescPacket::STOP_BYTE = static_cast<byte_t>(3);
 const uint8_t VescPacket::LOWER_BYTE_MASK = 0xFF;
-
-// Private inner class for util functions.
-class VescDriver::Impl
-{
-  const uint8_t LOWER_BYTE_MASK = 0xFF;
-  public:
-  Impl() {} 
-  // TODO: implement append methods for other types
-  void append(Buffer& buff, float number, float scale) 
-  {
-    append(buff, static_cast<int32_t>(scale * number));
-  }
-
-  void append(Buffer& buff, int32_t number)
-  {
-    buff.push_back(static_cast<uint8_t>((number >> 24) & LOWER_BYTE_MASK));
-    buff.push_back(static_cast<uint8_t>((number >> 16) & LOWER_BYTE_MASK));
-    buff.push_back(static_cast<uint8_t>((number >> 8) & LOWER_BYTE_MASK));
-    buff.push_back(static_cast<uint8_t>(number & LOWER_BYTE_MASK));
-  }
-
-  void append(Buffer& buff, int16_t number)
-  {
-    buff.push_back(static_cast<uint8_t>((number >> 8) & LOWER_BYTE_MASK));
-    buff.push_back(static_cast<uint8_t>(number & LOWER_BYTE_MASK));
-  }
-};
 
 VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
   name_(name) 
@@ -91,7 +64,7 @@ VescPacket VescPacket::createDutyCycleCmd(float duty_cycle)
 
   // Set signal
   payload.push_back(COMM_SET_DUTY); 
-  impl_->append(payload, duty_cycle, 100000.0);
+  append(payload, duty_cycle, 100000.0);
   return VescPacket("set_duty_cycle", payload);
 }
 
@@ -99,7 +72,7 @@ VescPacket VescPacket::createCurrentCmd(float current)
 {
   Buffer payload;
   payload.push_back(COMM_SET_CURRENT); 
-  impl_->append(payload, current, 1000.0);
+  append(payload, current, 1000.0);
   return VescPacket("set_current", payload);
 }
 
@@ -107,7 +80,7 @@ VescPacket VescPacket::createCurrentBrakeCmd(float brake)
 {
   Buffer payload;
   payload.push_back(COMM_SET_CURRENT_BRAKE); 
-  impl_->append(payload, brake, 1000.0);
+  append(payload, brake, 1000.0);
   return VescPacket("set_current_brake", payload);
 }
 
@@ -115,7 +88,7 @@ VescPacket VescPacket::createRpmCmd(int32_t rpm)
 {
   Buffer payload;
   payload.push_back(COMM_SET_RPM); 
-  impl_->append(payload, rpm);
+  append(payload, rpm);
   return VescPacket("set_rpm", payload);
 }
 
@@ -123,7 +96,7 @@ VescPacket VescPacket::createPositionCmd(float position)
 {
   Buffer payload;
   payload.push_back(COMM_SET_POS); 
-  impl_->append(payload, position, 1000000.0);
+  append(payload, position, 1000000.0);
   return VescPacket("set_position", payload);
 }
 
@@ -131,7 +104,7 @@ VescPacket VescPacket::createServoPositionCmd(float servo)
 {
   Buffer payload;
   payload.push_back(COMM_SET_SERVO_POS); 
-  impl_->append(payload, static_cast<int16_t>(servo * 1000.0));
+  append(payload, static_cast<int16_t>(servo * 1000.0));
   return VescPacket("set_position", payload);
 }
 
@@ -147,6 +120,30 @@ VescPacket VescPacket::createSendAliveCmd()
   Buffer payload;
   payload.push_back(COMM_ALIVE); 
   return VescPacket("alive", payload);
+}
+
+/*
+ * Private helper methods.
+ *
+ */
+
+void VescPacket::append(Buffer& buff, float number, float scale) 
+{
+  append(buff, static_cast<int32_t>(scale * number));
+}
+
+void VescPacket::append(Buffer& buff, int32_t number)
+{
+  buff.push_back(static_cast<uint8_t>((number >> 24) & LOWER_BYTE_MASK));
+  buff.push_back(static_cast<uint8_t>((number >> 16) & LOWER_BYTE_MASK));
+  buff.push_back(static_cast<uint8_t>((number >> 8) & LOWER_BYTE_MASK));
+  buff.push_back(static_cast<uint8_t>(number & LOWER_BYTE_MASK));
+}
+
+void VescPacket::append(Buffer& buff, int16_t number)
+{
+  buff.push_back(static_cast<uint8_t>((number >> 8) & LOWER_BYTE_MASK));
+  buff.push_back(static_cast<uint8_t>(number & LOWER_BYTE_MASK));
 }
 
 }

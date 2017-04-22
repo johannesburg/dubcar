@@ -2,7 +2,6 @@
 #define VESC_DRIVER_VESC_DRIVER_H
 #include "vesc_driver/vesc_interface.h"
 #include "vesc_driver/vesc_packet.h"
-#include <boost/scoped_ptr.hpp>
 #include <string>
 
 
