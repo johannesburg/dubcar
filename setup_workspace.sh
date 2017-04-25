@@ -24,6 +24,7 @@ fi
 # configure Ubuntu to look for packages in packages.ros.org
 add-apt-repository "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main restricted universe multiverse"
 add-apt-repository "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc)-updates main restricted universe multiverse"
+add-apt-repository ppa:roehling/latest
 
 # setup keys for connecting to ros package server
 apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
@@ -42,9 +43,12 @@ sudo -u $1 rosdep update
 # install wstools (better than rosinstall)
 apt-get install python-wstool
 
-# install catkin + dependencies
-sudo apt-get install ros-kinetic-catkin
-sudo apt-get install cmake python-catkin-pkg python-empy python-nose python-setuptools libgtest-dev build-essential
+# install catkin_tools (DONT USE CATKIN)
+apt-get install python-catkin-tools
+
+# for checking good conventions in CMakelists/package.xml, and ros style
+apt-get install python-catkin-lint
+apt-get install ros-kinetic-roslint
 
 # install all dependencies
 cd dubcar_ws
