@@ -12,6 +12,9 @@ add_definitions(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   serial
   roscpp
+  message_generation
+  std_msgs
+  ackermann_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -73,6 +76,7 @@ find_package(GTest REQUIRED)
 # generate_messages(
 #   DEPENDENCIES
 #   std_msgs  # Or other packages containing msgs
+#   ackermann_msgs
 # )
 
 ################################################
@@ -107,7 +111,7 @@ find_package(GTest REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES vesc_driver
-  CATKIN_DEPENDS serial roscpp
+  CATKIN_DEPENDS serial roscpp message_runtime std_msgs ackermann_msgs
   #  DEPENDS system_lib
 )
 
@@ -138,7 +142,10 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/vesc_driver_node.cpp)
+add_executable(${PROJECT_NAME}_node src/vesc_driver_node.cpp 
+                                    src/vesc_driver.cpp
+                                    src/vesc_interface.cpp
+                                    src/vesc_packet.cpp)
 ##add_executable(${PROJECT_NAME}_node src/vesc_driver_node.cpp src/vesc_driver.cpp src/vesc_interface.cpp src/vesc_packet.cpp)
 
 ## Rename C++ executable without prefix

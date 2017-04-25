@@ -1,7 +1,7 @@
 #include "ackermann_to_vesc/ackermann_to_vesc.h"
 #include "ros/ros.h"
 #include <ackermann_msgs/AckermannDrive.h>
-#include <std_msgs/Float64.h>
+#include <std_msgs/Float32.h>
 
 namespace ackermann_to_vesc
 {
@@ -10,8 +10,8 @@ AckermannToVesc::AckermannToVesc(ros::NodeHandle& nh)
 {
   // TODO use rosparam to load magic numbers (offset, gain, etc)
   nh.subscribe("ackermann", 10, &AckermannToVesc::ackermannCallback, this);
-  servo_pub_ = nh.advertise<std_msgs::Float64>("commands/servo/position", 10);
-  current_pub_ = nh.advertise<std_msgs::Float64>("commands/motor/current", 10);
+  servo_pub_ = nh.advertise<std_msgs::Float32>("commands/servo/position", 10);
+  current_pub_ = nh.advertise<std_msgs::Float32>("commands/motor/current", 10);
 }
 
 void AckermannToVesc::ackermannCallback(const ackermann_msgs::AckermannDrive::ConstPtr& cmd) 
