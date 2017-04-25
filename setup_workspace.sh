@@ -50,6 +50,9 @@ apt-get install python-catkin-tools
 apt-get install python-catkin-lint
 apt-get install ros-kinetic-roslint
 
+# install rqt_graph for visualization
+apt-get install ros-kinetic-rqt-graph
+
 # install all dependencies
 cd dubcar_ws
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
@@ -57,3 +60,6 @@ rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 # setup ros environment paths
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
+
+# set ros param server to enable stats (required for rqt_graph)
+rosparam set enable_statistics true
