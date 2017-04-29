@@ -5,6 +5,7 @@
 #include "vesc_driver/vesc_packet.h"
 #include "std_msgs/Float32.h"
 #include "std_msgs/Int32.h"
+#include "std_msgs/Empty.h"
 #include <string>
 
 
@@ -19,15 +20,22 @@ class VescDriver
   private: 
     VescDriver();
     VescInterface vesc_;
+    ros::Subscriber duty_cycle_sub_;
     ros::Subscriber current_sub_;
-    void setDutyCycleCallback(const std_msgs::Float32ConstPtr& duty_cycle);
+    ros::Subscriber current_brake_sub_;
+    ros::Subscriber rpm_sub_;
+    ros::Subscriber position_sub_;
+    ros::Subscriber servo_position_sub_;
+    ros::Subscriber reboot_sub_;
+    ros::Subscriber send_alive_sub_;
+    void setDutyCycleCallback(const std_msgs::Float32ConstPtr& msg);
     void setCurrentCallback(const std_msgs::Float32ConstPtr& msg);
-    void setCurrentBrakeCallback(const std_msgs::Float32ConstPtr& brake);
-    void setRpmCallback(const std_msgs::Int32::ConstPtr& rpm);
-    void setPositionCallback(const std_msgs::Float32ConstPtr& position);
-    void setServoPositionCallback(const std_msgs::Float32ConstPtr servo);
-    void rebootCallback();
-    void sendAliveCallback();
+    void setCurrentBrakeCallback(const std_msgs::Float32ConstPtr& msg);
+    void setRpmCallback(const std_msgs::Int32::ConstPtr& msg);
+    void setPositionCallback(const std_msgs::Float32ConstPtr& msg);
+    void setServoPositionCallback(const std_msgs::Float32ConstPtr& msg);
+    void rebootCallback(const std_msgs::EmptyConstPtr& msg);
+    void sendAliveCallback(const std_msgs::EmptyConstPtr& msg);
 };
 } // end vesc_driver namespace
 #endif

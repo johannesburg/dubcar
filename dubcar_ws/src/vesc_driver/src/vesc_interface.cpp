@@ -6,6 +6,7 @@
 #include <string>
 #include <serial/serial.h>
 #include <iostream>
+#include <sstream>
 namespace vesc_driver
 {
  
@@ -22,7 +23,10 @@ class VescInterface::Impl {
   serial::Serial serial_;
 };
 
+VescInterface::VescInterface() : impl_(new Impl()) {}
+
 // TODO: instert arguments, such as port, packet_handler, error_handler
+// TODO: connection checking
 VescInterface::VescInterface(const std::string& port) : impl_(new Impl()) 
 {
   if (!port.empty()) {
@@ -35,11 +39,11 @@ VescInterface::~VescInterface() {}
 
 
 // TODO: specify arguments, input will be a vesc_packet type
-void VescInterface::send(Buffer packet) 
+void VescInterface::send(const Buffer& packet) 
 {
   std::cout << "Outputting packet: ";
   for (auto i: packet)
-    std::cout << i << ' ' ;
+    std::cout << std::hex << i << ' ' ;
   std::cout << std::endl;
   // TODO: insert packet to send
   
@@ -51,7 +55,7 @@ void VescInterface::send(Buffer packet)
   }
 }
 
-void VescInterface::send(VescPacket packet)
+void VescInterface::send(const VescPacket& packet)
 {
   this->send(packet.getBuffer());
 }

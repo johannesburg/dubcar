@@ -48,13 +48,14 @@ VescPacket::VescPacket(const std::string &name, const Buffer &payload) :
   std::cout << std::endl;
 }
 
-// return unmodifiable view of this->packet's Buffer
-const Buffer VescPacket::getBuffer() const {
+const Buffer VescPacket::getBuffer() const 
+{
   return this->buf_;
 }
 
 // return unmodifiable view of this->packet's name
-const std::string VescPacket::getName() const {
+const std::string VescPacket::getName() const 
+{
   return this->name_;
 }
 

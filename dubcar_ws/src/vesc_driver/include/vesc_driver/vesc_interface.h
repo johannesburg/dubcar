@@ -11,9 +11,11 @@ namespace vesc_driver
 class VescInterface
 {
   public:
+    VescInterface();
     VescInterface(const std::string& port);
-    void send(Buffer payload);
-    void send(VescPacket packet);
+    ~VescInterface();
+    void send(const Buffer& payload);
+    void send(const VescPacket& packet);
     bool isConnected() const;
     void disconnect();
     void connect(const std::string& port);
