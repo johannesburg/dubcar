@@ -13,7 +13,8 @@ namespace vesc_driver
 
 VescDriver::VescDriver(ros::NodeHandle nh)
 {
-  const std::string port = "/dev/pts/20"; // TODO: use rosparam to get port
+  //const std::string port = "/dev/pts/20"; // for debugging
+  const std::string port = "/dev/ttyACM1"; // TODO: use rosparam to get port
   vesc_.connect(port);
 
   duty_cycle_sub_ = nh.subscribe<std_msgs::Float32>("commands/motor/duty_cycle", 10, &VescDriver::setDutyCycleCallback, this);
