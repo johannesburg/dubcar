@@ -1,0 +1,4 @@
+<launch>
+  <node name="vesc" pkg="vesc_driver" type="vesc_driver_node">
+  </node>
+</launch>
