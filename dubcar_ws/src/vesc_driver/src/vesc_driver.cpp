@@ -13,21 +13,22 @@ namespace vesc_driver
 
 VescDriver::VescDriver(ros::NodeHandle nh)
 {
-  //const std::string port = "/dev/pts/20"; // for debugging
-  const std::string port = "/dev/ttyACM1"; // TODO: use rosparam to get port
+  const std::string port = "/dev/pts/20"; // for debugging
+  //const std::string port = "/dev/ttyACM1"; // TODO: use rosparam to get port
   vesc_.connect(port);
 
   duty_cycle_sub_ = nh.subscribe<std_msgs::Float32>("commands/motor/duty_cycle", 10, &VescDriver::setDutyCycleCallback, this);
   current_sub_ = nh.subscribe<std_msgs::Float32>("commands/motor/current", 10, &VescDriver::setCurrentCallback, this);
   current_brake_sub_ = nh.subscribe<std_msgs::Float32>("commands/motor/current_brake", 
                                                         10, &VescDriver::setCurrentBrakeCallback, this);
-  rpm_sub_ = nh.subscribe<std_msgs::Int32>("commands/motor/rmp", 10, &VescDriver::setRpmCallback, this);
+  rpm_sub_ = nh.subscribe<std_msgs::Int32>("commands/motor/rpm", 10, &VescDriver::setRpmCallback, this);
   position_sub_ = nh.subscribe<std_msgs::Float32>("commands/servo/position", 10, &VescDriver::setPositionCallback, this);
   servo_position_sub_ = nh.subscribe<std_msgs::Float32>("commands/servo/servo_position", 10, &VescDriver::setServoPositionCallback, this);
   reboot_sub_ = nh.subscribe<std_msgs::Empty>("commands/vesc/reboot", 10, &VescDriver::rebootCallback, this);
 //  send_alive_sub_ = nh.subscribe<std_msgs::Empty>("commands/vesc/alive", 10, &VescDriver::sendAliveCallback, this);
 }
 
+// TODO: move stack allocated values to commands?
 void VescDriver::setDutyCycleCallback(const std_msgs::Float32ConstPtr& msg)
 {
   float duty_cycle = msg->data; 
@@ -53,8 +54,20 @@ void VescDriver::setCurrentBrakeCallback(const std_msgs::Float32ConstPtr& msg)
 void VescDriver::setRpmCallback(const std_msgs::Int32::ConstPtr& msg)
 {
   int rpm = msg->data; 
+  int max = 15000;
+  int min = -max;
   printf("RPM received: %d \n", rpm);
-  vesc_.send(VescPacket::createRpmCmd(rpm));
+  if (rpm >= min && rpm <= max) {
+    vesc_.send(VescPacket::createRpmCmd(rpm));
+  } else {
+    printf("RPM %d is outside of bounds ... clipping \n", rpm);
+    printf("min: %d max: %d \n", min, max);
+    if (rpm > max) {
+      vesc_.send(VescPacket::createRpmCmd(max));
+    } else if (rpm < min) {
+      vesc_.send(VescPacket::createRpmCmd(min));
+    }
+  }
 }
 
 void VescDriver::setPositionCallback(const std_msgs::Float32ConstPtr& msg)
