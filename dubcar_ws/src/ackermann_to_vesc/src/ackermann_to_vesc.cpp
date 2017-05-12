@@ -10,10 +10,10 @@ namespace ackermann_to_vesc
 AckermannToVesc::AckermannToVesc(ros::NodeHandle& nh) : 
 
   // TODO: how the fuck to indent, braces, etc
-  rpm_pub_(nh.advertise<std_msgs::Int32>("commands/motor/rpm", 100)),
-  servo_position_pub_(nh.advertise<std_msgs::Float32>("commands/servo/servo_position", 100)),
+  rpm_pub_(nh.advertise<std_msgs::Int32>("commands/motor/rpm", 10000)),
+  servo_position_pub_(nh.advertise<std_msgs::Float32>("commands/servo/servo_position", 10000)),
   // TODO use rosparam to load magic numbers (offset, gain, etc)
-  ackermann_sub_(nh.subscribe("commands/drivetrain/ackermann", 10, &AckermannToVesc::ackermannCallback, this))
+  ackermann_sub_(nh.subscribe("commands/drivetrain/ackermann", 10000, &AckermannToVesc::ackermannCallback, this))
   {}
 
 
@@ -30,7 +30,7 @@ void AckermannToVesc::ackermannCallback(const ackermann_msgs::AckermannDrive::Co
 
   // 1 / (rpm_erpm_raio * gear_ratio * wheel_diam * pi * mile/in * min/hr);
   float scale = 4613; // TODO: VERIFY 
-  rpm_msg_out-> data = (uint32_t) (msg->speed * scale);
+  rpm_msg_out-> data = (int32_t) (msg->speed * scale);
 
   std_msgs::Float32::Ptr servo_pos_msg_out(new std_msgs::Float32);
   servo_pos_msg_out->data = msg->steering_angle * -1.2134 + 0.5304; // TODO: VERIFY;

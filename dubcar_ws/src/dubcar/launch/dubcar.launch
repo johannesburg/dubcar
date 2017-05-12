@@ -1,0 +1,9 @@
+<launch>
+  <group ns="dubcar">
+    <include file="$(find teleop)/launch/teleop_node.launch"/> 
+    <include file="$(find ackermann_to_vesc)/launch/ackermann_to_vesc_node.launch"/> 
+    <include file="$(find vesc_driver)/launch/vesc_driver_node.launch">
+      <arg name="port" default="/dev/ttyACM0"/>
+    </include> 
+  </group>
+</launch>
