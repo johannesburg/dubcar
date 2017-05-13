@@ -3,7 +3,9 @@
   <machine name="Ubuntu16" address="Ubuntu16" env-loader="~/dubcar/setup_launch.bash" default="false"/>
   <node name="joy_node" pkg="joy" type="joy_node" machine="Ubuntu16"/> 
   <group ns="dubcar">
-    <include file="$(find teleop)/launch/teleop_node.launch" machine="Ubuntu16"/> 
+    <include file="$(find teleop)/launch/teleop_node.launch"> 
+      <arg name="machine" value="Ubuntu16"/>
+    </include>
     <include file="$(find ackermann_to_vesc)/launch/ackermann_to_vesc_node.launch"/> 
     <include file="$(find vesc_driver)/launch/vesc_driver_node.launch">
       <arg name="port" default="/dev/ttyACM0"/>

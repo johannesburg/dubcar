@@ -1,4 +1,4 @@
 <launch>
-  <node name="teleop" pkg="teleop" type="teleop_node">
-  </node>
+  <arg name="machine"/>
+  <node name="teleop" pkg="teleop" type="teleop_node" machine="$(arg machine)"/>
 </launch>
