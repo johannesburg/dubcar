@@ -1,4 +1,3 @@
 <launch>
-  <node name="ackermann_to_vesc" pkg="ackermann_to_vesc" type="ackermann_to_vesc_node">
-  </node>
+  <node name="ackermann_to_vesc" pkg="ackermann_to_vesc" type="ackermann_to_vesc_node"/>
 </launch>
