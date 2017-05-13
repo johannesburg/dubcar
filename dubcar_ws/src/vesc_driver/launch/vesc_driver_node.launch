@@ -1,5 +1,5 @@
 <launch>
-  <arg name="port" default="/dev/ttyACM1"/>
+  <arg name="port" default="/dev/ttyACM0"/>
   <node name="vesc_driver" pkg="vesc_driver" type="vesc_driver_node">
     <param name="port" value="$(arg port)"/>
   </node>
