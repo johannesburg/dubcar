@@ -1,11 +1,6 @@
 <launch>
-  <arg name="ros_master_uri" default="http://Ubuntu16:11311"/>
-  <machine name="tegra-ubuntu" address="tegra-ubuntu" env-loader="~/dubcar/setup_launch.bash" user="ubuntu" default="true">
-    <env name="ROS_MASTER_URI" value="$(arg ros_master_uri)"/>
-  </machine>
+  <machine name="tegra-ubuntu" address="tegra-ubuntu" env-loader="~/dubcar/setup_launch.bash" user="ubuntu" default="true"/>
   <machine name="Ubuntu16" address="Ubuntu16" env-loader="~/dubcar/setup_launch.bash" default="false"/>
-    <env name="ROS_MASTER_URI" value="$(arg ros_master_uri)"/>
-  </machine>
   <node name="joy_node" pkg="joy" type="joy_node" machine="Ubuntu16"/> 
   <group ns="dubcar">
     <include file="$(find teleop)/launch/teleop_node.launch" machine="Ubuntu16"/> 
