@@ -7,7 +7,8 @@ if [ "$(whoami)" != "root" ]; then
         echo "Run me as super user!"
         exit 1
 fi
-export ROS_MASTER_URI=http://10.0.1.4:11311 
+export ROS_MASTER_URI=http://Ubuntu16:11311 
+#export ROS_MASTER_URI=http://tegra-ubuntu:11311
 
 #export ROS_MASTER_URI=http://10.64.0.24:11311
 echo "Note that we run as root with user config files so some warning outputs are to be expected."
