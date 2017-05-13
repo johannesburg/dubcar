@@ -9,8 +9,8 @@ namespace teleop
   Teleop::Teleop(ros::NodeHandle nh) : 
     nh_(nh),
     ackermann_pub_(nh.advertise<ackermann_msgs::AckermannDrive>(
-          "commands/drivetrain/ackermann", 10000)),
-    joy_sub_(nh.subscribe<sensor_msgs::Joy>("/joy", 10000, &Teleop::joyCallback, this))
+          "commands/drivetrain/ackermann", 20)),
+    joy_sub_(nh.subscribe<sensor_msgs::Joy>("/joy", 20, &Teleop::joyCallback, this))
     {}
 
   void Teleop::joyCallback(const sensor_msgs::Joy::ConstPtr &msg) {
