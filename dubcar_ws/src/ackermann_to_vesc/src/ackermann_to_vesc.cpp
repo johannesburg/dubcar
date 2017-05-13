@@ -10,10 +10,10 @@ namespace ackermann_to_vesc
 AckermannToVesc::AckermannToVesc(ros::NodeHandle& nh) : 
 
   // TODO: how the fuck to indent, braces, etc
-  rpm_pub_(nh.advertise<std_msgs::Int32>("commands/motor/rpm", 10000)),
-  servo_position_pub_(nh.advertise<std_msgs::Float32>("commands/servo/servo_position", 10000)),
+  rpm_pub_(nh.advertise<std_msgs::Int32>("commands/motor/rpm", 20)),
+  servo_position_pub_(nh.advertise<std_msgs::Float32>("commands/servo/servo_position", 20)),
   // TODO use rosparam to load magic numbers (offset, gain, etc)
-  ackermann_sub_(nh.subscribe("commands/drivetrain/ackermann", 10000, &AckermannToVesc::ackermannCallback, this))
+  ackermann_sub_(nh.subscribe("commands/drivetrain/ackermann", 20, &AckermannToVesc::ackermannCallback, this, ros::TransportHints().udp()))
   {}
 
 
