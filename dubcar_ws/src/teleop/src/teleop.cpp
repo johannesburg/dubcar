@@ -1,5 +1,5 @@
 #include <teleop/teleop.h>
-#include <teleop/ps3joy.h>
+#include <teleop/xbox360joy.h>
 #include <ros/ros.h>
 #include <ackermann_msgs/AckermannDrive.h>
 
@@ -28,12 +28,12 @@ namespace teleop
   }
   void Teleop::joyCallback(const sensor_msgs::Joy::ConstPtr &msg) {
     
-    steering_angle_ = msg->axes[ps3joy::PS3_AXIS_STICK_RIGHT_LEFTWARDS];
+    steering_angle_ = msg->axes[xbox360joy::XBOX360_AXIS_STICK_RIGHT_LEFTWARDS];
   
     // TODO: is -1 a magic number?
-    if (msg->buttons[ps3joy::PS3_BUTTON_REAR_RIGHT_1] == 1) {
+    if (msg->buttons[xbox360joy::XBOX360_BUTTON_RB] == 1) {
       // deadman switch depressed  
-      speed_ = msg->axes[ps3joy::PS3_AXIS_STICK_LEFT_UPWARDS]
+      speed_ = msg->axes[xbox360joy::XBOX360_AXIS_STICK_LEFT_UPWARDS]
                        * max_speed_;
     } else {
       // default to stopped
