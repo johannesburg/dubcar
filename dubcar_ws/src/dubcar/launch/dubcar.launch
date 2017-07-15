@@ -1,7 +1,8 @@
 <launch>
   <machine name="tegra-ubuntu" address="tegra-ubuntu" env-loader="~/dubcar/setup_launch.bash" user="ubuntu" default="true"/>
   <machine name="Ubuntu16" address="Ubuntu16" env-loader="~/dubcar/setup_launch.bash" default="false"/>
-  <node name="joy_node" pkg="joy" type="joy_node" machine="Ubuntu16"/> 
+  <node name="joy_node" pkg="joy" type="joy_node" machine="Ubuntu16">
+  </node>
   <group ns="dubcar">
     <include file="$(find teleop)/launch/teleop_node.launch"> 
       <arg name="machine" value="Ubuntu16"/>
