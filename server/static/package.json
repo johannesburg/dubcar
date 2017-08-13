@@ -1,0 +1,24 @@
+{
+  "name": "dubcar_server",
+  "version": "1.0.0",
+  "description": "Real-time data streaming for DubCar ",
+  "main": "project/app.py",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Colin Summers and Johan Michalove",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^8.0.17",
+    "bootstrap": "^3.3.7",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-browser": "^2.1.4",
+    "gulp-size": "^2.1.0",
+    "reactify": "^1.1.1"
+  }
+}
