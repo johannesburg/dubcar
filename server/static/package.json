@@ -10,11 +10,17 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^8.0.17",
+    "babelify": "^7.3.0",
     "bootstrap": "^3.3.7",
+    "gulp-sourcemaps": "^2.6.0",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
   },
   "devDependencies": {
+    "babel-preset-react": "^6.24.1",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-browser": "^2.1.4",
