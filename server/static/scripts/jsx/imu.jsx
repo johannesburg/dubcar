@@ -1,66 +1,73 @@
 
-var IMU = React.createClass({
+export default class IMU extends React.Component {
 
-  // sets initial state
-  getInitialState: function(){
-    // Wtf is this
-    console.log("My domain: " + document.domain);
-    console.log("My port: " + location.port);
+  constructor(props) {
+    super(props);
+    // init state
+    this.WIDTH = window.innerWidth;
+    this.HEIGHT = window.innerHeight;
+    this.SPEED = 0.01
+    this.scene = new THREE.Scene();
+    this.socket = props.socket
     
+    this.cube = this.initCube()
+    this.initCamera()
+    this.initRenderer()
+    this.renderFrame()
 
-    var my_state = { searchString : '', countries:[]};
-    console.log(my_state);
-    return my_state
-  },
+  }
 
-  componentDidMount: function() {
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-		socket.on('connect', function() {
-		  console.log("i'm connected!");
-    });	
-    socket.on('message', function(message) {
-      console.log("i got mail: " + message);
-    });
-  
+  componentDidMount() {
+    document.getElementById("renderer").appendChild(this.renderer.domElement);
+    console.log("this: " + this);
+    console.log(this.socket);
+    console.log("this.socket.on: " + this.socket.on);
+    // TODO yeah wtf is this
     self = this
-    socket.on('countries', function(message) {
-      self.setState({countries:message});
-      console.log("new countries " + message);
-      self.forceUpdate();
+    this.socket.on('imu', function(roll, pitch, yaw) {
+      self.rotateCube(roll, pitch, yaw);
     });
-    this.state.socket = socket
-  },
+  }
 
-  // sets state, triggers render method
-  handleChange: function(event){
-    // grab value form input box
-    this.setState({searchString:event.target.value});
-    this.state.socket.send(this.state.searchString);
-    this.state.socket.emit('test', this.state.searchString);
-		console.log("scope updated!");
-  },
+  rotateCube(roll, pitch, yaw) {
+    this.cube.rotation.x = roll * (Math.PI/180);
+    this.cube.rotation.z = pitch * (Math.PI/180);
+    this.cube.rotation.y = yaw * (Math.PI/180);
+  }  
+  
+  initCamera() {
+    this.camera = new THREE.PerspectiveCamera(70, this.WIDTH / this.HEIGHT, 1, 10);
+    this.camera.position.set(0, 5, 7);
+    this.camera.lookAt(this.scene.position);
+  }
 
-  render: function() {
+  initRenderer() {
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
+  }
 
-    var countries = this.state.countries;
-    var searchString = this.state.searchString.trim().toLowerCase();
+  initCube() {
+    console.log('initcube')
+    var cube = new THREE.Mesh(new THREE.BoxGeometry(4, 4, 4), new THREE.MeshNormalMaterial());
+    console.log('exitcube')
+    console.log(this.cube)
+    this.scene.add(cube);
+    return cube;
+  }
 
-    // filter countries list by value from input box
-    if(searchString.length > 0){
-      countries = countries.filter(function(country){
-        return country.toLowerCase().match( searchString );
-      });
-    }
 
+  renderFrame() {
+
+    requestAnimationFrame(this.renderFrame.bind(this));
+    this.renderer.render(this.scene, this.camera);
+  }
+
+
+  render() {
     return (
-      <div>
-        <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search!" />
-        <ul>
-          { countries.map(function(country){ return <li>{country} </li> }) }
-        </ul>
+      <div id="renderer">
       </div>
     )
   }
-
-});
+}
 

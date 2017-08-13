@@ -2,6 +2,8 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 import eventlet
 from Queue import Queue
+import numpy as np
+
 eventlet.monkey_patch()
 
 # Shared/Global data
@@ -25,13 +27,25 @@ socketio = SocketIO(app, logger=True, engineio_logger=True)
 def ack():
     print 'message received callback'
 
+def wrap(angle):
+    return angle 
+
+
 def rotate_and_emit():
-    countries = map(lambda country : country['name'], 
-                    shared_countries)
-    while True: 
-        socketio.emit('countries', countries[0:10])
-        countries.append(countries.pop(0))
-        eventlet.sleep(0.1)
+   
+    roll = pitch = yaw = 0
+    roll_v = 5
+    pitch_v = 0.1
+    yaw_v = 0
+    dt = 0.01
+    step = 0
+    while True:
+        roll = wrap(roll_v * step * dt)
+        pitch = wrap(pitch_v * step * dt)
+        yaw = wrap(yaw_v * step * dt)
+        step = step + 20
+        socketio.emit('imu', (roll, pitch, yaw))
+        eventlet.sleep(dt)
 
 @socketio.on('message')
 def handle_message(message):

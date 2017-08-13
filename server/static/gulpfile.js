@@ -7,7 +7,7 @@ var watchify = require('watchify');
 var babel = require('babelify');
 
 function compile(watch) {
-  var bundler = watchify(browserify('./scripts/jsx/main.js', { debug: true }).transform(babel, {presets: ["react", "es2015"]}));
+  var bundler = watchify(browserify('./scripts/jsx/main.jsx', { debug: true }).transform(babel, {presets: ["react", "es2015"]}));
 
   function rebundle() {
     bundler.bundle()
